@@ -11,10 +11,7 @@ app.use(cors());
 const router = express.Router();
 
 // this is our MongoDB database
-const connectionString ='mongodb+srv://elclubber2:12345@cluster0-wctlx.gcp.mongodb.net/test?retryWrites=true&w=majority';
-
-// connects our back end code with the database
-mongoose.connect(connectionString, {useNewUrlParser: true});
+const connectionString ='mongodb://elclubber2:12345@cluster0-shard-00-00-wctlx.gcp.mongodb.net:27017,cluster0-shard-00-01-wctlx.gcp.mongodb.net:27017,cluster0-shard-00-02-wctlx.gcp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority';
 
 
 // (optional) only made for logging and
@@ -75,6 +72,11 @@ router.post('/putData', (req, res) => {
 
 // append /api for our http requests
 app.use('/api', router);
+
+(async () => {
+// connects our back end code with the database
+mongoose.connect(connectionString, {useNewUrlParser: true});
+})();
 
 // launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
